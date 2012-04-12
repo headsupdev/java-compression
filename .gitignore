@@ -1,0 +1,15 @@
+# Maven files #
+###############
+target/
+
+# IDEA files #
+##############
+*.ipr
+*.iws
+*.iml
+.idea
+
+# OS generated files #
+######################
+.DS_Store*
+
