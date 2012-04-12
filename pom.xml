@@ -10,7 +10,7 @@
   <groupId>org.headsupdev.support</groupId>
   <artifactId>java-compression</artifactId>
   <name>Java Compression</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <url>http://headsupdev.org/java-compression/docs</url>
 
   <scm>
