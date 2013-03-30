@@ -91,13 +91,11 @@ public class UncompressedFile
             for ( int i = 0; i < files.length; i++ )
             {
                 /* FIXME add a recursive flag */
-                zipCompress( files[i], thisDir, delete,
-                        zout );
+                zipCompress( files[i], thisDir, delete, zout );
             }
         }
         else
         {
-
             BufferedInputStream origin = null;
             try
             {
@@ -110,6 +108,13 @@ public class UncompressedFile
                 while ( (count = origin.read( data, 0, BUFFER )) != -1 )
                 {
                     zout.write( data, 0, count );
+                }
+            }
+            catch ( FileNotFoundException e )
+            {
+                if ( !e.getMessage().contains( "(Too many levels of symbolic links)" ) )
+                {
+                    throw e;
                 }
             }
             finally

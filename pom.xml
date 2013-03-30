@@ -44,6 +44,14 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <testResources>
+      <testResource>
+        <directory>${project.basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
+  </build>
+
   <repositories>
     <repository>
       <id>headsupdev-release</id>

@@ -113,6 +113,17 @@ public class UncompressedFileTest
         gzip.delete();
     }
 
+    public void testRecursiveSimlink()
+            throws Exception
+    {
+        UncompressedFile recursiveLink = new UncompressedFile( "src/test/resources/recursive" );
+        assertTrue( recursiveLink.exists() );
+        ZipFile zippedFile = recursiveLink.zipCompress();
+        assertTrue( zippedFile.exists() );
+
+        zippedFile.delete();
+    }
+
     public static Test suite()
     {
         return new TestSuite( UncompressedFileTest.class );
