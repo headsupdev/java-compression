@@ -17,11 +17,11 @@
 package org.headsupdev.support.java.compression;
 
 import com.ice.tar.TarArchive;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import java.io.*;
 import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class UncompressedFile
         extends java.io.File
@@ -59,11 +59,10 @@ public class UncompressedFile
 
         String dest = this.getAbsolutePath() + ".zip";
 
-        ZipOutputStream zout = null;
+        ZipArchiveOutputStream zout = null;
         try
         {
-            zout = new ZipOutputStream( new BufferedOutputStream(
-                    new FileOutputStream( dest ) ) );
+            zout = new ZipArchiveOutputStream( new File( dest ) );
 
             zipCompress( this, "", delete, zout );
         }
@@ -79,14 +78,15 @@ public class UncompressedFile
     }
 
     private static void zipCompress( java.io.File file, String prefix,
-                                     boolean delete, ZipOutputStream zout ) throws IOException
+                                     boolean delete, ZipArchiveOutputStream zout ) throws IOException
     {
         byte data[] = new byte[BUFFER];
 
         if ( file.isDirectory() )
         {
             String thisDir = prefix + file.getName() + separatorChar;
-            zout.putNextEntry( new ZipEntry( thisDir ) );
+            zout.putArchiveEntry( new ZipArchiveEntry( thisDir ) );
+            zout.closeArchiveEntry();
             java.io.File[] files = file.listFiles();
             for ( int i = 0; i < files.length; i++ )
             {
@@ -102,13 +102,14 @@ public class UncompressedFile
                 origin = new BufferedInputStream(
                         new FileInputStream( file ), BUFFER );
 
-                ZipEntry entry = new ZipEntry( prefix + file.getName() );
-                zout.putNextEntry( entry );
+                ZipArchiveEntry entry = new ZipArchiveEntry( prefix + file.getName() );
+                zout.putArchiveEntry( entry );
                 int count;
-                while ( (count = origin.read( data, 0, BUFFER )) != -1 )
+                while ( ( count = origin.read( data, 0, BUFFER ) ) != -1 )
                 {
                     zout.write( data, 0, count );
                 }
+                zout.closeArchiveEntry();
             }
             catch ( FileNotFoundException e )
             {
@@ -149,11 +150,10 @@ public class UncompressedFile
         }
         UncompressedFile dest = new UncompressedFile( getParentPath( files[0] ), "data.zip" );
 
-        ZipOutputStream zout = null;
+        ZipArchiveOutputStream zout = null;
         try
         {
-            zout = new ZipOutputStream( new BufferedOutputStream(
-                    new FileOutputStream( dest ) ) );
+            zout = new ZipArchiveOutputStream( dest );
 
             for ( int i = 0; i < files.length; i++ )
             {
